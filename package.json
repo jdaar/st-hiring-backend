@@ -1,5 +1,5 @@
 {
-    "name": "@seeticketsus/st-hiring-backend",
+    "name": "@st-hiring/backend",
     "description": "seetickets-core project",
     "license": "UNLICENSED",
     "private": true,
@@ -10,14 +10,15 @@
     },
     "scripts": {
         "start": "yarn nodemon src/index.ts",
+        "dev": "nodemon src/index.ts",
         "test": "jest",
         "migrations:make": "yarn knex migrate:make --migrations-directory src/database/migrations ",
         "migrations:latest": "yarn knex migrate:latest --knexfile ./src/knexfile.ts --migrations-directory ./database/migrations",
         "migrations:down": "yarn knex migrate:down --knexfile ./src/knexfile.ts --migrations-directory ./database/migrations",
         "db:seed": "yarn knex seed:run --knexfile ./src/knexfile.ts --migrations-directory ./database/seeds"
     },
-    "packageManager": "yarn@3.6.1",
     "dependencies": {
+        "@st-hiring/shared": "workspace:*",
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "express": "4.19.2",
