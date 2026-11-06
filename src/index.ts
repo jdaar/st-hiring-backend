@@ -3,30 +3,40 @@ import express from 'express';
 import cors from 'cors';
 import { knex } from 'knex';
 import dbConfig from './knexfile';
-import { createEventDAL } from './dal/events.dal';
-import { createTicketDAL } from './dal/tickets.dal';
+import { createEventsRepository } from './dal/events.dal';
 import { createGetEventsController } from './controllers/get-events';
+import { errorHandler } from './middleware/error-handler';
 
-const Knex = knex(dbConfig.development);
+const main = async () => {
+  const postgres = knex(dbConfig.development);
 
-const eventDAL = createEventDAL(Knex);
-const TicketDAL = createTicketDAL(Knex);
+  const repositories = {
+    events: createEventsRepository(postgres),
+  };
 
-const app = express();
+  const app = express();
 
-app.use(cors());
-app.use(express.json());
+  app.use(cors());
+  app.use(express.json());
 
-app.use('/health', (_req, res) => {
-  res.json({ status: 'ok' });
-});
+  app.use('/health', (_req, res) => {
+    res.json({ status: 'ok' });
+  });
 
-app.use('/events', createGetEventsController({ eventsDAL: eventDAL, ticketsDAL: TicketDAL }));
+  app.get('/events', createGetEventsController({ eventsRepository: repositories.events }));
 
-app.use('/', (_req, res) => {
-  res.json({ message: 'Hello API' });
-});
+  app.use('/', (_req, res) => {
+    res.json({ message: 'Hello API' });
+  });
 
-app.listen(3000, () => {
-  console.log('Server Started');
+  app.use(errorHandler);
+
+  app.listen(3000, () => {
+    console.log('Server Started');
+  });
+};
+
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
 });
