@@ -27,6 +27,13 @@ services:
       POSTGRES_PASSWORD: example
       POSTGRES_DB: seetickets
 
+  jaeger:
+    image: jaegertracing/jaeger
+    ports:
+      - 16686:16686 # UI
+      - 4317:4317 # OTLP gRPC
+      - 4318:4318 # OTLP HTTP, where the backend exports traces
+
   adminer:
     image: adminer
     restart: always
