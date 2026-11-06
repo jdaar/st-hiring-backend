@@ -4,6 +4,7 @@
 
   "compilerOptions": {
     "target": "ES2022",
+    "lib": ["ES2022", "ESNext.Object"],
     "module": "CommonJS",
     "composite": true,
     "rootDir": "src",
