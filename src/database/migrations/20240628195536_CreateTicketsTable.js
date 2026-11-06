@@ -2,8 +2,8 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function(knex) {
-  return knex.schema.createTable('tickets', table => {
+exports.up = function (knex) {
+  return knex.schema.createTable('tickets', (table) => {
     table.increments('id').primary();
     table.integer('event_id').unsigned().notNullable();
     table.string('status').notNullable();
@@ -18,6 +18,6 @@ exports.up = function(knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function(knex) {
+exports.down = function (knex) {
   return knex.schema.dropTable('tickets');
 };

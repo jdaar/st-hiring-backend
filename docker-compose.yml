@@ -39,3 +39,11 @@ services:
     restart: always
     ports:
       - 8080:8080
+
+  sonarqube:
+    image: sonarqube:community
+    ports:
+      - 9000:9000
+    environment:
+      # embedded Elasticsearch otherwise needs vm.max_map_count>=262144 inside the podman machine
+      SONAR_SEARCH_JAVAADDITIONALOPTS: -Dnode.store.allow_mmap=false

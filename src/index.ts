@@ -1,6 +1,7 @@
 import './tracing';
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
 import { knex } from 'knex';
 import { MongoClient } from 'mongodb';
 import { TRANSACTION_ID_HEADER } from '@st-hiring/shared';
@@ -23,9 +24,17 @@ const main = async () => {
   });
 
   const app = express();
+  // first, so error responses carry the headers too; a json api never loads resources or gets framed
+  app.use(
+    helmet({
+      contentSecurityPolicy: { useDefaults: false, directives: { defaultSrc: ["'none'"], frameAncestors: ["'none'"] } },
+      frameguard: { action: 'deny' },
+    }),
+  );
 
-  // cors answers preflight requests, which never carry custom headers, before the transaction id is required
-  app.use(cors({ exposedHeaders: [TRANSACTION_ID_HEADER] }));
+  // cors answers preflight requests, which never carry custom headers, before the transaction id is required;
+  // the vite dev server proxies the api, so only a separately hosted frontend needs to be allowed (comma separated)
+  app.use(cors({ origin: process.env.CORS_ORIGINS?.split(',') ?? false, exposedHeaders: [TRANSACTION_ID_HEADER] }));
   app.use(requireTransactionId);
   app.use(express.json());
 

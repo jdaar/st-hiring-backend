@@ -9,7 +9,7 @@ import {
   UpsertSettingInput,
 } from '@st-hiring/shared';
 
-interface SettingDocument {
+export interface SettingDocument {
   _id: string;
   value: SettingValue;
   version: number;
@@ -45,7 +45,13 @@ export const createSettingsRepository = (db: Db): SettingsRepository => {
         throw exists ? new SettingVersionConflictError(input.id, input.version) : new SettingNotFoundError(input.id);
       }
 
-      const document: SettingDocument = { _id: input.id, value: input.value, version: 1, createdAt: now, updatedAt: now };
+      const document: SettingDocument = {
+        _id: input.id,
+        value: input.value,
+        version: 1,
+        createdAt: now,
+        updatedAt: now,
+      };
       try {
         await settings.insertOne(document);
         return toSetting(document);

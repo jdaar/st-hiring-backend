@@ -5,13 +5,16 @@ export default defineConfig({
     name: 'backend',
     environment: 'node',
     include: ['src/**/*.test.ts'],
-    passWithNoTests: true,
+    clearMocks: true,
+    restoreMocks: true,
+    unstubEnvs: true,
     coverage: {
       provider: 'v8',
       include: ['src/**/*.ts'],
       // migrations and seeds are run by knex, not by the app
       exclude: ['src/**/*.test.ts', 'src/database/**'],
       reporter: ['text', 'html', 'lcov', 'json-summary'],
+      thresholds: { 100: true },
     },
   },
 });

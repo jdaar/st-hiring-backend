@@ -35,6 +35,12 @@ sdk.start();
 
 for (const signal of ['SIGINT', 'SIGTERM'] as const) {
   process.once(signal, () => {
-    sdk.shutdown().finally(() => process.exit(0));
+    sdk.shutdown().then(
+      () => process.exit(0),
+      (error: unknown) => {
+        console.error(error);
+        process.exit(1);
+      },
+    );
   });
 }

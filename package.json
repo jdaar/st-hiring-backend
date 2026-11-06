@@ -16,7 +16,10 @@
         "migrations:latest": "yarn knex migrate:latest --knexfile ./src/knexfile.ts --migrations-directory ./database/migrations",
         "migrations:down": "yarn knex migrate:down --knexfile ./src/knexfile.ts --migrations-directory ./database/migrations",
         "db:seed": "yarn knex seed:run --knexfile ./src/knexfile.ts --migrations-directory ./database/seeds",
-        "test:coverage": "vitest run --coverage"
+        "db:seed:mongo": "ts-node src/database/mongo-seeds/settings.seed.ts",
+        "db:seed:all": "yarn db:seed && yarn db:seed:mongo",
+        "test:coverage": "vitest run --coverage",
+        "lint": "eslint ."
     },
     "dependencies": {
         "@opentelemetry/api": "^1.10.0",
@@ -30,23 +33,27 @@
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "express": "4.19.2",
+        "helmet": "^8.3.0",
         "knex": "^3.1.0",
         "mongodb": "^6.8.0",
         "pg": "^8.12.0",
         "yup": "^1.4.0"
     },
     "devDependencies": {
+        "@eslint/js": "^9",
         "@faker-js/faker": "^8.4.1",
         "@types/cors": "^2.8.17",
         "@types/express": "^4.17.21",
         "@types/node": "^22.0.0",
         "@vitest/coverage-v8": "^2.1.9",
-        "eslint": "^9.6.0",
+        "@vitest/eslint-plugin": "1.6.27",
+        "eslint": "^9",
+        "globals": "^17.14.0",
         "nodemon": "^3.1.4",
         "prettier": "3.3.2",
-        "ts-loader": "^9.5.1",
         "ts-node": "^10.9.2",
         "typescript": "5.5.2",
+        "typescript-eslint": "^8",
         "vitest": "^2.1.9"
     }
 }

@@ -1,4 +1,9 @@
-import { EventsRepository, GetPaginatedEventsRequest, GetPaginatedEventsResponse, ResponseBody } from '@st-hiring/shared';
+import {
+  EventsRepository,
+  GetPaginatedEventsRequest,
+  GetPaginatedEventsResponse,
+  ResponseBody,
+} from '@st-hiring/shared';
 
 export const createGetPaginatedEventsUseCase =
   ({ eventsRepository }: { eventsRepository: EventsRepository }) =>
