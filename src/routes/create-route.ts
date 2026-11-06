@@ -1,19 +1,18 @@
 import { Request, RequestHandler, Response, Router } from 'express';
 import * as yup from 'yup';
-import { RequestSchemas, validateRequest } from '../middleware/validate-request';
+import { InferSchema, RequestSchemas } from '@st-hiring/shared';
+import { validateRequest } from '../middleware/validate-request';
 
 export type HttpMethod = 'get' | 'post' | 'put' | 'patch' | 'delete';
 
-type Infer<S> = S extends yup.ISchema<infer T> ? T : never;
-
 export type TypedRequest<R extends RequestSchemas> = Request<
-  R['params'] extends yup.ISchema<unknown> ? Infer<R['params']> : Record<string, never>,
+  R['params'] extends yup.ISchema<unknown> ? InferSchema<R['params']> : Record<string, never>,
   unknown,
-  R['body'] extends yup.ISchema<unknown> ? Infer<R['body']> : unknown,
-  R['query'] extends yup.ISchema<unknown> ? Infer<R['query']> : Record<string, never>
+  R['body'] extends yup.ISchema<unknown> ? InferSchema<R['body']> : unknown,
+  R['query'] extends yup.ISchema<unknown> ? InferSchema<R['query']> : Record<string, never>
 >;
 
-export type TypedResponse<S extends yup.ISchema<unknown>> = Response<Infer<S>>;
+export type TypedResponse<S extends yup.ISchema<unknown>> = Response<InferSchema<S>>;
 
 export interface RouteDefinition<R extends RequestSchemas, S extends yup.ISchema<unknown>> {
   method: HttpMethod;
