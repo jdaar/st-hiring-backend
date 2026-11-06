@@ -11,11 +11,12 @@
     "scripts": {
         "start": "yarn nodemon src/index.ts",
         "dev": "nodemon src/index.ts",
-        "test": "jest",
+        "test": "vitest run",
         "migrations:make": "yarn knex migrate:make --migrations-directory src/database/migrations ",
         "migrations:latest": "yarn knex migrate:latest --knexfile ./src/knexfile.ts --migrations-directory ./database/migrations",
         "migrations:down": "yarn knex migrate:down --knexfile ./src/knexfile.ts --migrations-directory ./database/migrations",
-        "db:seed": "yarn knex seed:run --knexfile ./src/knexfile.ts --migrations-directory ./database/seeds"
+        "db:seed": "yarn knex seed:run --knexfile ./src/knexfile.ts --migrations-directory ./database/seeds",
+        "test:coverage": "vitest run --coverage"
     },
     "dependencies": {
         "@opentelemetry/api": "^1.10.0",
@@ -38,15 +39,14 @@
         "@faker-js/faker": "^8.4.1",
         "@types/cors": "^2.8.17",
         "@types/express": "^4.17.21",
-        "@types/jest": "^29.5.12",
         "@types/node": "^22.0.0",
+        "@vitest/coverage-v8": "^2.1.9",
         "eslint": "^9.6.0",
-        "jest": "^29.7.0",
         "nodemon": "^3.1.4",
         "prettier": "3.3.2",
-        "ts-jest": "^29.1.5",
         "ts-loader": "^9.5.1",
         "ts-node": "^10.9.2",
-        "typescript": "5.5.2"
+        "typescript": "5.5.2",
+        "vitest": "^2.1.9"
     }
 }

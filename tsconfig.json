@@ -10,7 +10,7 @@
     "composite": true,
     "rootDir": "src",
     "outDir": "dist",
-    "types": ["jest", "node"],
+    "types": ["node"],
     "noUnusedParameters": false,
     "declaration": true,
     "declarationMap": true,

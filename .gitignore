@@ -134,3 +134,6 @@ cdk.out
 
 #We only use yarn so ignore any package.lock
 package-lock.json
+
+# test coverage
+coverage/
