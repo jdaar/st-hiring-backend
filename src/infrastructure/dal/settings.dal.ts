@@ -1,6 +1,13 @@
 import { Db, MongoServerError } from 'mongodb';
-import { Setting, SettingsRepository, SettingValue, UpsertSettingInput } from '@st-hiring/shared';
-import { SettingAlreadyExistsError, SettingNotFoundError, SettingVersionConflictError } from '../../errors/application-errors';
+import {
+  Setting,
+  SettingAlreadyExistsError,
+  SettingNotFoundError,
+  SettingsRepository,
+  SettingValue,
+  SettingVersionConflictError,
+  UpsertSettingInput,
+} from '@st-hiring/shared';
 
 interface SettingDocument {
   _id: string;

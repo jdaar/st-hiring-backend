@@ -1,6 +1,5 @@
 import { RequestHandler } from 'express';
-import { RequestSchemas, validateRequestSources } from '@st-hiring/shared';
-import { ValidationFailedError } from '../errors/application-errors';
+import { RequestSchemas, ValidationFailedError, validateRequestSources } from '@st-hiring/shared';
 
 // validates every request source that has a schema and replaces it with the cast value
 export const validateRequest =

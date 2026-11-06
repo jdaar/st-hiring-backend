@@ -1,10 +1,9 @@
 import { ErrorRequestHandler } from 'express';
-import { createFailureResponse } from '@st-hiring/shared';
-import { InternalError, isApplicationError } from '../errors/application-errors';
+import { ApplicationError, InternalError, createFailureResponse } from '@st-hiring/shared';
 
 export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
-  const applicationError = isApplicationError(error) ? error : new InternalError({ cause: error });
-  if (!isApplicationError(error)) console.error(error);
+  const applicationError = error instanceof ApplicationError ? error : new InternalError({ cause: error });
+  if (!(error instanceof ApplicationError)) console.error(error);
 
   res.status(applicationError.httpCode ?? 500).json(createFailureResponse(applicationError));
 };

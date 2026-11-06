@@ -1,6 +1,5 @@
 import { RequestHandler } from 'express';
-import { TRANSACTION_ID_HEADER } from '@st-hiring/shared';
-import { ValidationFailedError } from '../errors/application-errors';
+import { TRANSACTION_ID_HEADER, ValidationFailedError } from '@st-hiring/shared';
 
 // safe to echo back and to store as a span attribute
 const VALID_TRANSACTION_ID = /^[\w-]{1,128}$/;
