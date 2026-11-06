@@ -36,6 +36,15 @@ export class SettingAlreadyExistsError extends Error implements ApplicationError
   }
 }
 
+export class RouteNotFoundError extends Error implements ApplicationError<1004> {
+  readonly code = 1004;
+  readonly httpCode = 404;
+
+  constructor(method: string, path: string) {
+    super(`Route ${method} ${path} does not exist`);
+  }
+}
+
 export class InternalError extends Error implements ApplicationError<1999> {
   readonly code = 1999;
   readonly httpCode = 500;

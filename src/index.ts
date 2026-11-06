@@ -9,6 +9,7 @@ import { createSettingsRepository } from './infrastructure/dal/settings.dal';
 import { createUseCases } from './application/usecases';
 import { createV1Router } from './routes/v1';
 import { errorHandler } from './middleware/error-handler';
+import { notFoundHandler } from './middleware/not-found-handler';
 
 const main = async () => {
   const postgres = knex(dbConfig.development);
@@ -24,16 +25,17 @@ const main = async () => {
   app.use(cors());
   app.use(express.json());
 
-  app.use('/health', (_req, res) => {
+  app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });
   });
 
   app.use('/v1', createV1Router(useCases));
 
-  app.use('/', (_req, res) => {
+  app.get('/', (_req, res) => {
     res.json({ message: 'Hello API' });
   });
 
+  app.use(notFoundHandler);
   app.use(errorHandler);
 
   app.listen(3000, () => {
