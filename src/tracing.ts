@@ -16,7 +16,11 @@ const sdk = new NodeSDK({
   // sends to OTEL_EXPORTER_OTLP_ENDPOINT, http://localhost:4318 (jaeger in docker-compose) by default
   traceExporter: new OTLPTraceExporter(),
   instrumentations: [
-    new HttpInstrumentation({ ignoreIncomingRequestHook: (req) => req.url === '/health' }),
+    new HttpInstrumentation({
+      ignoreIncomingRequestHook: (req) => req.url === '/health',
+      // recorded on the HTTP server span as http.request.header.x-transaction-id
+      headersToSpanAttributes: { server: { requestHeaders: ['x-transaction-id'] } },
+    }),
     new ExpressInstrumentation({
       // router spans are named after the router's first route by default (router - /events), use the mount path instead
       spanNameHook: ({ layerType, route }, defaultName) =>
