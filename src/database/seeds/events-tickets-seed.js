@@ -18,7 +18,8 @@ exports.seed = async function(knex) {
         event_id: event.id,
         status: faker.helpers.arrayElement(['available', 'sold', 'reserved']),
         type: 'general',
-        price: 1000,
+        face_value_price: 10,
+        service_fee_price: 1.5,
       });
     }
   }
