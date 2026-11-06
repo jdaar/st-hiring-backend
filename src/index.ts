@@ -47,7 +47,7 @@ const main = async () => {
   });
 };
 
-main().catch((error) => {
+main().catch((error: unknown) => {
   console.error(error);
   process.exit(1);
 });

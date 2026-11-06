@@ -1,7 +1,8 @@
-import { ErrorRequestHandler } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { ApplicationError, InternalError, createFailureResponse } from '@st-hiring/shared';
 
-export const errorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
+// express types the error as any, it can be anything that was thrown
+export const errorHandler = (error: unknown, _req: Request, res: Response, _next: NextFunction) => {
   const applicationError = error instanceof ApplicationError ? error : new InternalError({ cause: error });
   if (!(error instanceof ApplicationError)) console.error(error);
 
