@@ -1,9 +1,7 @@
 import { Request, RequestHandler, Response, Router } from 'express';
 import * as yup from 'yup';
-import { InferSchema, RequestSchemas } from '@st-hiring/shared';
+import { EndpointContract, HttpMethod, InferSchema, RequestSchemas } from '@st-hiring/shared';
 import { validateRequest } from '../middleware/validate-request';
-
-export type HttpMethod = 'get' | 'post' | 'put' | 'patch' | 'delete';
 
 export type TypedRequest<R extends RequestSchemas> = Request<
   R['params'] extends yup.ISchema<unknown> ? InferSchema<R['params']> : Record<string, never>,
@@ -14,29 +12,24 @@ export type TypedRequest<R extends RequestSchemas> = Request<
 
 export type TypedResponse<S extends yup.ISchema<unknown>> = Response<InferSchema<S>>;
 
-export interface RouteDefinition<R extends RequestSchemas, S extends yup.ISchema<unknown>> {
-  method: HttpMethod;
-  path: string;
-  // shared request DTO schema per request source, validated by the validateRequest middleware
-  request?: R;
-  // shared response DTO schema, types res.json
-  response: S;
-  handler: (req: TypedRequest<R>, res: TypedResponse<S>) => Promise<void> | void;
-}
+export type RouteHandler<R extends RequestSchemas, S extends yup.ISchema<unknown>> = (
+  req: TypedRequest<R>,
+  res: TypedResponse<S>,
+) => Promise<void> | void;
 
 export interface Route {
-  method: HttpMethod;
+  method: Lowercase<HttpMethod>;
   path: string;
   handlers: RequestHandler[];
 }
 
-export const createRoute = <S extends yup.ISchema<unknown>, R extends RequestSchemas = Record<never, never>>({
-  method,
-  path,
-  request,
-  handler,
-}: RouteDefinition<R, S>): Route => ({
-  method,
+// serves a shared endpoint contract: its request DTOs are validated by the validateRequest middleware
+// and type req, its response DTO types res.json
+export const createRoute = <S extends yup.ISchema<unknown>, R extends RequestSchemas>(
+  { method, path, request }: EndpointContract<R, S>,
+  handler: RouteHandler<R, S>,
+): Route => ({
+  method: method.toLowerCase() as Lowercase<HttpMethod>,
   path,
   handlers: [
     ...(request ? [validateRequest(request)] : []),

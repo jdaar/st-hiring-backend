@@ -33,7 +33,7 @@ const main = async () => {
     res.json({ status: 'ok' });
   });
 
-  app.use('/v1', createV1Router(useCases));
+  app.use(createV1Router(useCases));
 
   app.get('/', (_req, res) => {
     res.json({ message: 'Hello API' });

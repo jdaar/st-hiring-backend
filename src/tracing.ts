@@ -22,9 +22,8 @@ const sdk = new NodeSDK({
       headersToSpanAttributes: { server: { requestHeaders: ['x-transaction-id'] } },
     }),
     new ExpressInstrumentation({
-      // router spans are named after the router's first route by default (router - /events), use the mount path instead
-      spanNameHook: ({ layerType, route }, defaultName) =>
-        layerType === ExpressLayerType.ROUTER ? `router - ${route}` : defaultName,
+      // routes are mounted at the root, so the router span says nothing the request handler span does not
+      ignoreLayersType: [ExpressLayerType.ROUTER],
     }),
     // knex runs its queries through pg; requireParentSpan drops queries made outside a request (pool setup, migrations)
     new PgInstrumentation({ requireParentSpan: true }),
