@@ -162,6 +162,20 @@ describe('server', () => {
     expect(res.json).toHaveBeenCalledWith(body);
   });
 
+  it('answers /health without requiring a transaction id', async () => {
+    // Arrange
+    await startServer();
+    const healthIndex = mocks.app.get.mock.calls.findIndex(([route]) => route === '/health');
+    const transactionIdIndex = mocks.app.use.mock.calls.findIndex(([m]) => m === 'transaction id middleware');
+
+    // Act
+    const healthOrder = mocks.app.get.mock.invocationCallOrder[healthIndex];
+    const transactionIdOrder = mocks.app.use.mock.invocationCallOrder[transactionIdIndex];
+
+    // Assert
+    expect(healthOrder).toBeLessThan(transactionIdOrder);
+  });
+
   it('listens on port 3000', async () => {
     // Arrange
     await startServer();

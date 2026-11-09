@@ -35,12 +35,13 @@ const main = async () => {
   // cors answers preflight requests, which never carry custom headers, before the transaction id is required;
   // the vite dev server proxies the api, so only a separately hosted frontend needs to be allowed (comma separated)
   app.use(cors({ origin: process.env.CORS_ORIGINS?.split(',') ?? false, exposedHeaders: [TRANSACTION_ID_HEADER] }));
-  app.use(requireTransactionId);
-  app.use(express.json());
-
+  // probes and load balancers don't send a transaction id
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });
   });
+
+  app.use(requireTransactionId);
+  app.use(express.json());
 
   app.use(createV1Router(useCases));
 
