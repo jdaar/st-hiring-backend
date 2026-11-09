@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { faker } from '@faker-js/faker';
 import { Db, MongoClient } from 'mongodb';
-import { SettingDocument } from '../../infrastructure/dal/settings.dal';
+import { SettingDocument } from '../../dal/settings.dal';
 
 const PROMOTIONAL_CODES = 5;
 
